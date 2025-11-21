@@ -21,28 +21,20 @@ function HomePage() {
   const userName = "John Doe";
 
   useEffect(() => {
-    // 1. Get data from URL
+    // Get data from URL
     const searchParams = new URLSearchParams(window.location.search);
     const action = searchParams.get('action');
     const name = searchParams.get('name');
     const amount = searchParams.get('amount');
 
-    // 2. If "add" action exists, format data for Context
     if (action === 'add' && name && amount) {
-        
-        // MATCHING THE CONTEXT EXPECTATION:
-        // The context wants { product: { name: "..." }, amount: ... }
         const payloadForContext = {
             product: {
                 name: name
             },
             amount: parseFloat(amount)
         };
-
-        // 3. Send it. Context will handle ID and Number generation itself.
         addAccount(payloadForContext);
-
-        // 4. Clean the URL
         window.history.replaceState({}, '', '/');
     }
   }, [addAccount]);
