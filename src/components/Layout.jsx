@@ -3,17 +3,18 @@
 import { Outlet } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import SmartBankLogo from '../assets/smartbanklogo.jpg'; 
+import React, { useState } from 'react';
+import SelectAccountDialog from './SelectAccountDialog';
 
 function Layout() {
+    const [showModal, setShowModal] = useState(false);
+    const handleOpen = () => setShowModal(true);
+    const handleClose = () => setShowModal(false);
   
-  const handleOpenAccountClick = () => {
-    alert("Initiating new account funding process...");
-  };
-
-  const renderTooltip = (props, message) => (
-    <Tooltip id="button-tooltip" {...props}>
-        {message}
-    </Tooltip>
+    const renderTooltip = (props, message) => (
+        <Tooltip id="button-tooltip" {...props}>
+            {message}
+        </Tooltip>
     );
   
   {/* Navbar */}
@@ -56,9 +57,9 @@ function Layout() {
             
             <Button 
               variant="warning"
-              onClick={handleOpenAccountClick}
+              onClick={handleOpen}
             >
-              Open New Account
+              Open Account
             </Button>
             
           </Navbar.Collapse>
@@ -79,6 +80,13 @@ function Layout() {
         <p className="mb-0 text-muted">123 Main Street, Orlando, FL 32810</p>
         </Container>
       </footer>
+
+      {/* 💡 RENDER THE DIALOG */}
+        <SelectAccountDialog 
+            show={showModal}
+            handleClose={handleClose}
+        />
+
     </div>
   );
 }
