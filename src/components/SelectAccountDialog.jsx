@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button, Table, Form, InputGroup } from 'react-bootstrap';
 
 const BACKEND_URL = 'http://localhost:3000/create-checkout-session';
+
 const accountProducts = [
   { id: 'checking', name: 'Checking Account', rate: 0.0, minDeposit: 50.00 },
   { id: 'mm', name: 'Money Market', rate: 0.025, minDeposit: 500.00 },
@@ -10,7 +11,7 @@ const accountProducts = [
   { id: 'cd1y', name: 'Certificate of Deposit (1 Year)', rate: 0.055, minDeposit: 1000.00 }
 ];
 
-function SelectAccountDialog({ show, handleClose, handleOpenStripe }) {
+function SelectAccountDialog({ show, handleClose }) {
   const [selectedAccount, setSelectedAccount] = useState(accountProducts[0].id);
   const [depositAmount, setDepositAmount] = useState('');
   
@@ -24,16 +25,21 @@ function SelectAccountDialog({ show, handleClose, handleOpenStripe }) {
     e.preventDefault();
     const amount = parseFloat(depositAmount);
 
-    const checkoutData = {
-    product: selectedProduct, 
-    amount: amount,          
+    // 1. Construct the payload for the API
+    // We send 'name' so the backend can attach it to the Success URL
+    const apiPayload = {
+        name: selectedProduct.name, 
+        amount: amount,          
     };
+
+    // NOTE: We are NOT saving to sessionStorage here anymore.
+    // We are trusting the API to return this data in the success_url.
 
     try {
         const response = await fetch(BACKEND_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(checkoutData),
+            body: JSON.stringify(apiPayload),
         });
 
         if (!response.ok) {
@@ -43,15 +49,18 @@ function SelectAccountDialog({ show, handleClose, handleOpenStripe }) {
         }
 
         const data = await response.json();
-
+        
+        // Redirect to Stripe
+        // The Backend must have success_url configured to return params:
+        // e.g. .../payment-success?name=Checking&amount=500
         window.location.href = data.url; 
 
     } catch (error) {
         console.error('Error starting Stripe process:', error);
         alert('There was an error connecting to the payment server.');
         onModalClose();
-        }
-      };
+    }
+  };
 
   return (
     <Modal show={show} onHide={onModalClose} size="lg" centered>
@@ -62,8 +71,6 @@ function SelectAccountDialog({ show, handleClose, handleOpenStripe }) {
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           <h4>Select Account Type</h4>
-          
-          {/* Account Types Table */}
           <Table striped bordered hover responsive size="sm" className="mb-4">
             <thead className="table-primary text-dark">
               <tr>
@@ -97,7 +104,6 @@ function SelectAccountDialog({ show, handleClose, handleOpenStripe }) {
             </tbody>
           </Table>
 
-          {/* Deposit Amount */}
           {selectedProduct && (
             <>
               <h4>Enter Opening Deposit Amount</h4>
@@ -109,7 +115,7 @@ function SelectAccountDialog({ show, handleClose, handleOpenStripe }) {
                 <Form.Control
                   type="number"
                   placeholder="0.00"
-                  min="0.50"
+                  min={selectedProduct.minDeposit}
                   step="0.01"
                   value={depositAmount}
                   onChange={(e) => setDepositAmount(e.target.value)}

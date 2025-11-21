@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import { AccountProvider } from './context/AccountContext';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 // Router Configuration
 const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
         path: '*',
         element: <HomePage />,
       },
+      {
+        path: '/payment-success',
+        element: <PaymentSuccess />,
+      }
     ],
   },
 ]);
