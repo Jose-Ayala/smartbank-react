@@ -1,7 +1,8 @@
 // src/App.jsx
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
-import HomePage from './pages/HomePage'; 
+import HomePage from './pages/HomePage';
+import { AccountProvider } from './context/AccountContext';
 
 // Router Configuration
 const router = createBrowserRouter([
@@ -14,12 +15,20 @@ const router = createBrowserRouter([
         element: <HomePage />,
         index: true,
       },
+      {
+        path: '*',
+        element: <HomePage />,
+      },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AccountProvider>
+      <RouterProvider router={router} />
+    </AccountProvider>
+  );
 }
 
 export default App;
