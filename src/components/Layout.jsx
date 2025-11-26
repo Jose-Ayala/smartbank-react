@@ -23,12 +23,12 @@ function Layout() {
       
       <Navbar bg="primary" variant="dark" expand="lg" sticky="top"> 
         <Container>
-          <Navbar.Brand href="/">
+          <Navbar.Brand href="/" className="d-flex align-items-center">
             <img
               src={SmartBankLogo} 
-              width="30"        
-              height="30"       
-              className="d-inline-block align-top me-2" 
+              width="60"        
+              height="60"       
+              className="d-inline-block me-2" 
               alt="SmartBank Logo"
             />
             SmartBank
