@@ -61,7 +61,7 @@ function HomePage() {
         ))}
       </Row>
 
-      <h2 className="mb-3 mt-5">Recent Transactions</h2>
+      <h2 className="mb-3 mt-5">Recent Transactions - SmartBank Checking</h2>
       <Row>
         <Col xs={12}>
           <Table striped bordered hover responsive>
