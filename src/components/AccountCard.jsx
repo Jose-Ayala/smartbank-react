@@ -6,7 +6,7 @@ function AccountCard(props) {
   return (
     <Col xs={12} md={6} lg={4} className="mb-4"> 
       <Card bg="white" text="dark" className="shadow-lg h-100">
-        <Card.Header className="bg-warning text-dark fw-light">
+        <Card.Header className="bg-warning text-dark" >
           <span>{account.name || 'Account Details'}</span>
         </Card.Header>
         <Card.Body>
