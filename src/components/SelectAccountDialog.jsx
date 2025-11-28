@@ -4,7 +4,7 @@ import { Modal, Button, Table, Form, InputGroup } from 'react-bootstrap';
 const BACKEND_URL = 'http://localhost:3000/create-checkout-session';
 
 const accountProducts = [
-  { id: 'checking', name: 'Checking Account', rate: 0.0, minDeposit: 50.00 },
+  { id: 'checking', name: 'Checking Account', rate: 0.01, minDeposit: 50.00 },
   { id: 'mm', name: 'Money Market', rate: 0.025, minDeposit: 500.00 },
   { id: 'savings', name: 'Savings Account', rate: 0.030, minDeposit: 100.00 },
   { id: 'cd6m', name: 'Certificate of Deposit (6 Month)', rate: 0.040, minDeposit: 1000.00 },
@@ -25,15 +25,11 @@ function SelectAccountDialog({ show, handleClose }) {
     e.preventDefault();
     const amount = parseFloat(depositAmount);
 
-    // 1. Construct the payload for the API
-    // We send 'name' so the backend can attach it to the Success URL
+    // Construct the payload for the API
     const apiPayload = {
         name: selectedProduct.name, 
         amount: amount,          
     };
-
-    // NOTE: We are NOT saving to sessionStorage here anymore.
-    // We are trusting the API to return this data in the success_url.
 
     try {
         const response = await fetch(BACKEND_URL, {
@@ -51,8 +47,6 @@ function SelectAccountDialog({ show, handleClose }) {
         const data = await response.json();
         
         // Redirect to Stripe
-        // The Backend must have success_url configured to return params:
-        // e.g. .../payment-success?name=Checking&amount=500
         window.location.href = data.url; 
 
     } catch (error) {

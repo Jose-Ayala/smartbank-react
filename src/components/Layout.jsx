@@ -1,5 +1,3 @@
-// src/components/Layout.jsx
-
 import { Outlet } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import SmartBankLogo from '../assets/smartbanklogo.jpg'; 
@@ -81,7 +79,7 @@ function Layout() {
         </Container>
       </footer>
 
-      {/* 💡 RENDER THE DIALOG */}
+      {/* Dialog */}
         <SelectAccountDialog 
             show={showModal}
             handleClose={handleClose}

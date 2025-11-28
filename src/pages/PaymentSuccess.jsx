@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Alert, Button } from 'react-bootstrap';
 
 function PaymentSuccess() {
-    // 1. Read params from the URL (Browser's address bar)
+    // Read params from the URL (Browser's address bar)
     const searchParams = new URLSearchParams(window.location.search);
     const name = searchParams.get('name');
     const amount = searchParams.get('amount');
